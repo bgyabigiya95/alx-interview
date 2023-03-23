@@ -1,21 +1,22 @@
 #!/usr/bin/python3
 """
-Main file for testing
+Given a pile of coins of different values, determine the fewest number of coins
+needed to meet a given amount total
 """
 
 
 def makeChange(coins, total):
-    """
-    change
-    """
+    """this functions determines the fewest number of coins needed to meet
+    a given amount total - using coins of different values"""
     if total <= 0:
         return 0
-    matriz = [float('inf')] * (total + 1)
-    matriz[0] = 0
-    for i in range(len(coins)):
-        for j in range(coins[i], total + 1):
-            matriz[j] = min(matriz[j], matriz[j - coins[i]] + 1)
-    if matriz[total] != float('inf'):
-        return matriz[total]
-    else:
-        return -1
+    coins = sorted(coins, reverse=True)
+    curTotal = 0
+    minCoins = 0
+    for coin in coins:
+        bal = (total - curTotal)//coin
+        curTotal += bal*coin
+        minCoins += bal
+        if curTotal == total:
+            return minCoins
+    return -1
